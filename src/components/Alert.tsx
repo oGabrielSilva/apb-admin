@@ -101,9 +101,7 @@ function Alert({ title, message }: IAlertProps) {
         </button>
       </div>
       <div>
-        <p style={{ marginTop: Margins.margin / 2 }}>
-          {message || 'Lorem ipsum dolor sit amet ipsum dolor sit amet'}
-        </p>
+        <p style={{ marginTop: Margins.margin / 2 }}>{message || ''}</p>
       </div>
     </div>
   )

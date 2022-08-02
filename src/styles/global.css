@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
+@keyframes loading {
+  from {
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -42,4 +50,16 @@ button:disabled {
 .App {
   padding-left: 26px;
   padding-right: 26px;
+}
+
+.activity {
+  border: 5px solid;
+  border-radius: 100%;
+  animation-name: loading;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
 }

@@ -12,6 +12,7 @@ import { ApolloContext } from '../context/Apollo'
 import Colors from '../utils/Colors'
 import Margins from '../utils/Margins'
 import Validation from '../utils/Validation'
+import Loading from './Loading'
 
 interface IStyle {
   input: CSSProperties
@@ -57,10 +58,11 @@ const styles: IStyle = {
 function SignInForm() {
   const { isMobile, handleStorageSignIn, handleAlert } =
     useContext(ApolloContext)
-  const [remember, setRemember] = useState(false)
+  const [remember, setRemember] = useState(true)
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
   const [buttonDisabled, setButtonDisabled] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
@@ -78,8 +80,11 @@ function SignInForm() {
       handleAlert('Oopss...', 'Check all fields')
       return
     }
+    setButtonDisabled(true)
+    setLoading(true)
     Account.signIn({ email, password })
       .then((response) => {
+        setLoading(false)
         if (response.data && response.data.session) {
           handleStorageSignIn(response.data, remember)
           handleAlert(
@@ -89,12 +94,15 @@ function SignInForm() {
         }
       })
       .catch((error) => {
-        if (error.response && error.response.data) {
-          handleAlert(
-            'Oopss... some error happened',
-            error.response.data.message as string
-          )
-        }
+        setLoading(false)
+        setButtonDisabled(false)
+        handleAlert(
+          'Oopss... some error happened',
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+            ''
+        )
       })
   }, [email, password, remember])
 
@@ -138,13 +146,8 @@ function SignInForm() {
               </div>
             )) || <div style={styles.checkbox} />}
           </button>
-          <span style={{ marginLeft: Margins.margin / 3 }}>
-            Manter conectado
-          </span>
+          <span style={{ marginLeft: Margins.margin / 3 }}>Remember</span>
         </div>
-        <Link to="/forgot-password" style={{ color: Colors.link }}>
-          Esqueceu a senha?
-        </Link>
       </div>
       <button
         disabled={buttonDisabled}
@@ -152,7 +155,7 @@ function SignInForm() {
         style={styles.submitBtn}
         onClick={() => handleSignIn()}
       >
-        <span style={{ fontWeight: 700, color: Colors.dark }}>Entrar</span>
+        <span style={{ fontWeight: 700, color: Colors.dark }}>Sign in</span>
       </button>
       <div
         style={{
@@ -173,6 +176,7 @@ function SignInForm() {
           Sign up
         </Link>
       </div>
+      {loading && <Loading />}
     </div>
   )
 }
