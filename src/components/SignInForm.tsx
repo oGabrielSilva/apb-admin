@@ -96,7 +96,7 @@ function SignInForm() {
           )
         }
       })
-  }, [email, password])
+  }, [email, password, remember])
 
   return (
     <div

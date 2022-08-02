@@ -71,12 +71,13 @@ function ApolloContextProvider({ children }: TAPCProps) {
   const handleSignOut = useCallback(() => {
     if (sessionUid) {
       Account.signOut(sessionUid)
-        .then((response) => {
-          console.log(response.data)
+        .then(() => {
           setSession(null)
           setUserInfo(null)
+          localStorage.removeItem(Constants.sessionKey)
+          localStorage.removeItem(Constants.userSessionKey)
         })
-        .catch((error) => console.log(error))
+        .catch((error) => console.log(error)) //eslint-disable-line
     }
   }, [sessionUid])
 
