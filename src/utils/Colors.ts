@@ -1,4 +1,6 @@
 class Colors {
+  private constructor() {}
+
   public static dark = '#000000'
 
   public static bg = '#121212'
@@ -11,11 +13,11 @@ class Colors {
 
   public static variantAlpha = '#483263'
 
-  public static text = '#999999'
+  public static text = '#ffffff'
 
   public static link = '#b783f7'
 
-  private constructor() {}
+  public static red = '#ff1f1f'
 }
 
 export default Colors

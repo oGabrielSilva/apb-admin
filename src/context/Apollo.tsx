@@ -3,6 +3,7 @@ import React, {
   ReactNode,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useState,
 } from 'react'
@@ -18,8 +19,8 @@ type TSession = {
 }
 
 interface IApolloContext {
-  sessionUid: string
-  userInfo?: TUserInfo
+  sessionUid: string | null
+  userInfo: TUserInfo | null
   alertVisibled: boolean
   isMobile: boolean
   setAlertVisibled: (value: boolean) => void //eslint-disable-line
@@ -34,8 +35,8 @@ export const ApolloContext = createContext<IApolloContext>({} as IApolloContext)
 
 function ApolloContextProvider({ children }: TAPCProps) {
   // Session
-  const [sessionUid, setSession] = useState<string>('')
-  const [userInfo, setUserInfo] = useState<TUserInfo>()
+  const [sessionUid, setSession] = useState<string | null>(null)
+  const [userInfo, setUserInfo] = useState<TUserInfo | null>(null)
 
   // Alert
   const [alertVisibled, setAlertVisibled] = useState<boolean>(false)
@@ -110,6 +111,12 @@ function ApolloContextProvider({ children }: TAPCProps) {
     return () => {
       window.removeEventListener('resize', handleResizeScreen)
     }
+  }, [])
+
+  useLayoutEffect(() => {
+    setSession(localStorage.getItem(Constants.sessionKey))
+    const user = localStorage.getItem(Constants.userSessionKey)
+    if (user) setUserInfo(JSON.parse(user))
   }, [])
 
   return (

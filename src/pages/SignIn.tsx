@@ -30,7 +30,7 @@ const styles: IStyle = {
   },
 }
 
-function Home() {
+function SignIn() {
   const { isMobile } = useContext(ApolloContext)
 
   return (
@@ -52,4 +52,4 @@ function Home() {
   )
 }
 
-export default Home
+export default SignIn

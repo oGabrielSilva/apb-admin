@@ -37,7 +37,7 @@ class Account {
     return axios({
       method: 'post',
       url: account.base,
-      data: body,
+      data: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
       },

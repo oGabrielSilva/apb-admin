@@ -3,7 +3,7 @@ class Env {
 
   public static isDevMode = true
 
-  public static baseDev = 'https://test-apollo-api-admin.herokuapp.com'
+  public static baseDev = 'https://apb-admin-api.herokuapp.com'
 
   public static baseDevAccount = this.baseDev.concat('/account')
 }
