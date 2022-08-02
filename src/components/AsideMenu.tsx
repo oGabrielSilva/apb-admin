@@ -1,4 +1,5 @@
-import React, { CSSProperties } from 'react'
+import React, { CSSProperties, useContext } from 'react'
+import { ApolloContext } from '../context/Apollo'
 import { TScreens } from '../pages/Home'
 import Colors from '../utils/Colors'
 import Margins from '../utils/Margins'
@@ -27,6 +28,8 @@ const styles: { button: CSSProperties } = {
 }
 
 function AsideMenu({ screen, setScreen }: IAsideMenuProps) {
+  const { handleSignOut } = useContext(ApolloContext)
+
   return (
     <div
       style={{
@@ -248,6 +251,7 @@ function AsideMenu({ screen, setScreen }: IAsideMenuProps) {
               width: '100%',
               cursor: 'pointer',
             }}
+            onClick={handleSignOut}
           >
             <span
               className="material-symbols-outlined"

@@ -43,6 +43,19 @@ class Account {
       },
     })
   }
+
+  public static async signOut(uid: string) {
+    const account = new Account('/signout')
+
+    return axios({
+      method: 'post',
+      url: account.base,
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Uid ${uid}`,
+      },
+    })
+  }
 }
 
 export default Account

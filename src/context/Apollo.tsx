@@ -7,6 +7,7 @@ import React, {
   useMemo,
   useState,
 } from 'react'
+import Account from '../api/Account'
 import Alert from '../components/Alert'
 import Constants from '../utils/Constants'
 import Device from '../utils/Device'
@@ -29,6 +30,7 @@ interface IApolloContext {
   handleAlert: (title: string, message: string) => void //eslint-disable-line
   handleStorageSignIn: (session: TSession, remember: boolean) => void //eslint-disable-line
   handleStorageSignUp: (session: TSession) => void //eslint-disable-line
+  handleSignOut: () => void //eslint-disable-line
 }
 
 export const ApolloContext = createContext<IApolloContext>({} as IApolloContext)
@@ -66,6 +68,17 @@ function ApolloContextProvider({ children }: TAPCProps) {
     },
     []
   )
+  const handleSignOut = useCallback(() => {
+    if (sessionUid) {
+      Account.signOut(sessionUid)
+        .then((response) => {
+          console.log(response.data)
+          setSession(null)
+          setUserInfo(null)
+        })
+        .catch((error) => console.log(error))
+    }
+  }, [sessionUid])
 
   const handleStorageSignUp = useCallback((session: TSession) => {
     setSession(session.session.uid as string)
@@ -90,6 +103,7 @@ function ApolloContextProvider({ children }: TAPCProps) {
       handleAlert,
       handleStorageSignIn,
       handleStorageSignUp,
+      handleSignOut,
     }),
     [
       sessionUid,
@@ -102,6 +116,7 @@ function ApolloContextProvider({ children }: TAPCProps) {
       handleAlert,
       setAlertMessage,
       handleStorageSignUp,
+      handleSignOut,
     ]
   )
 
