@@ -6,6 +6,7 @@ import Margins from '../utils/Margins'
 
 interface IAsideMenuProps {
   screen: TScreens
+  expanded: boolean
   setScreen: (value: TScreens) => void //eslint-disable-line
 }
 
@@ -27,17 +28,18 @@ const styles: { button: CSSProperties } = {
   },
 }
 
-function AsideMenu({ screen, setScreen }: IAsideMenuProps) {
+function AsideMenu({ expanded, screen, setScreen }: IAsideMenuProps) {
   const { handleSignOut } = useContext(ApolloContext)
 
   return (
     <div
       style={{
+        transition: '0.5s ease',
         position: 'fixed',
         display: 'flex',
         height: '100vh',
         background: Colors.bg,
-        left: 0,
+        left: expanded ? 0 : -300,
         top: 0,
       }}
     >
@@ -151,6 +153,62 @@ function AsideMenu({ screen, setScreen }: IAsideMenuProps) {
               }}
             >
               Posts
+            </span>
+          </button>
+          <button
+            type="button"
+            style={{
+              ...styles.button,
+              ...(screen === 'Category' && {
+                background: Colors.variantAlpha,
+                borderLeft: `5px solid ${Colors.variant}`,
+              }),
+            }}
+            onClick={() => setScreen('Category')}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{
+                color: (screen === 'Category' && Colors.text) || Colors.third,
+              }}
+            >
+              category
+            </span>
+            <span
+              style={{
+                marginLeft: 10,
+                color: (screen === 'Category' && Colors.text) || Colors.third,
+              }}
+            >
+              Category
+            </span>
+          </button>
+          <button
+            type="button"
+            style={{
+              ...styles.button,
+              ...(screen === 'Tags' && {
+                background: Colors.variantAlpha,
+                borderLeft: `5px solid ${Colors.variant}`,
+              }),
+            }}
+            onClick={() => setScreen('Tags')}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{
+                color: (screen === 'Tags' && Colors.text) || Colors.third,
+              }}
+            >
+              sell
+            </span>
+            <span
+              style={{
+                marginLeft: 10,
+                color: (screen === 'Tags' && Colors.text) || Colors.third,
+              }}
+            >
+              Tags
             </span>
           </button>
           <button

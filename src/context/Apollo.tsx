@@ -14,7 +14,12 @@ import Device from '../utils/Device'
 
 type TAPCProps = { children: ReactNode }
 export type TPath = '/' | '/sign-up' | '/sign-in'
-type TUserInfo = { name: string; email: string }
+type TUserInfo = {
+  name: string
+  email: string
+  active: boolean
+  avatar: string
+}
 type TSession = {
   session: { uid: string }
   user: TUserInfo
@@ -67,7 +72,12 @@ function ApolloContextProvider({ children }: TAPCProps) {
   const handleStorageSignIn = useCallback(
     (session: TSession, remember: boolean) => {
       setSession(session.session.uid as string)
-      setUserInfo({ name: session.user.name, email: session.user.email })
+      setUserInfo({
+        name: session.user.name,
+        email: session.user.email,
+        active: session.user.active,
+        avatar: session.user.avatar,
+      })
       if (remember) {
         localStorage.setItem(Constants.sessionKey, session.session.uid)
         localStorage.setItem(
@@ -93,7 +103,12 @@ function ApolloContextProvider({ children }: TAPCProps) {
 
   const handleStorageSignUp = useCallback((session: TSession) => {
     setSession(session.session.uid as string)
-    setUserInfo({ name: session.user.name, email: session.user.email })
+    setUserInfo({
+      name: session.user.name,
+      email: session.user.email,
+      active: session.user.active,
+      avatar: session.user.avatar,
+    })
     localStorage.setItem(Constants.sessionKey, session.session.uid)
     localStorage.setItem(Constants.userSessionKey, JSON.stringify(session.user))
   }, [])
