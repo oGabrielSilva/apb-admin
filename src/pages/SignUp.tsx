@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext, useEffect } from 'react'
+import React, { CSSProperties, useContext } from 'react'
 import Footer from '../components/Footer'
 import SignUpForm from '../components/SignUpForm'
 import { ApolloContext } from '../context/Apollo'
@@ -32,12 +32,6 @@ const styles: IStyle = {
 
 function SignUp() {
   const { isMobile } = useContext(ApolloContext)
-
-  const context = useContext(ApolloContext)
-
-  useEffect(() => {
-    console.log(context)
-  }, [context])
 
   return (
     <div>

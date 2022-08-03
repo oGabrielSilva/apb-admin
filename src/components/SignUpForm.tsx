@@ -7,12 +7,12 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Link } from 'react-router-dom'
 import Account from '../api/Account'
 import { ApolloContext } from '../context/Apollo'
 import Colors from '../utils/Colors'
 import Margins from '../utils/Margins'
 import Validation from '../utils/Validation'
+import Link from './Link'
 
 interface IStyle {
   input: CSSProperties

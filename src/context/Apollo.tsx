@@ -13,6 +13,7 @@ import Constants from '../utils/Constants'
 import Device from '../utils/Device'
 
 type TAPCProps = { children: ReactNode }
+export type TPath = '/' | '/sign-up' | '/sign-in'
 type TUserInfo = { name: string; email: string }
 type TSession = {
   session: { uid: string }
@@ -24,6 +25,8 @@ interface IApolloContext {
   userInfo: TUserInfo | null
   alertVisibled: boolean
   isMobile: boolean
+  path: TPath
+  setPath: (value: TPath) => void //eslint-disable-line
   setAlertVisibled: (value: boolean) => void //eslint-disable-line
   setAlertTitle: (value: string) => void //eslint-disable-line
   setAlertMessage: (value: string) => void //eslint-disable-line
@@ -31,6 +34,7 @@ interface IApolloContext {
   handleStorageSignIn: (session: TSession, remember: boolean) => void //eslint-disable-line
   handleStorageSignUp: (session: TSession) => void //eslint-disable-line
   handleSignOut: () => void //eslint-disable-line
+  handleDispathPath: (value: TPath) => void //eslint-disable-line
 }
 
 export const ApolloContext = createContext<IApolloContext>({} as IApolloContext)
@@ -47,6 +51,12 @@ function ApolloContextProvider({ children }: TAPCProps) {
 
   // System
   const [isMobile, setIsMobile] = useState<boolean>(false)
+  const [path, setPath] = useState<TPath>('/')
+
+  const handleDispathPath = useCallback((to: TPath) => {
+    window.history.pushState(null, to, to)
+    setPath(to)
+  }, [])
 
   const handleAlert = useCallback((title: string, message: string) => {
     setAlertTitle(title)
@@ -98,6 +108,9 @@ function ApolloContextProvider({ children }: TAPCProps) {
       userInfo,
       alertVisibled,
       isMobile,
+      path,
+      setPath,
+      handleDispathPath,
       setAlertVisibled,
       setAlertTitle,
       setAlertMessage,
@@ -111,6 +124,9 @@ function ApolloContextProvider({ children }: TAPCProps) {
       isMobile,
       userInfo,
       alertVisibled,
+      path,
+      setPath,
+      handleDispathPath,
       setAlertVisibled,
       handleStorageSignIn,
       setAlertTitle,
@@ -124,12 +140,21 @@ function ApolloContextProvider({ children }: TAPCProps) {
   useEffect(() => {
     handleResizeScreen()
     window.addEventListener('resize', handleResizeScreen)
+    window.onpopstate = () => setPath(window.location.pathname as TPath)
+
     return () => {
       window.removeEventListener('resize', handleResizeScreen)
     }
   }, [])
 
+  useEffect(() => {
+    if (path !== window.location.pathname) {
+      setPath(window.location.pathname as TPath)
+    }
+  }, [path])
+
   useLayoutEffect(() => {
+    // Session
     setSession(localStorage.getItem(Constants.sessionKey))
     const user = localStorage.getItem(Constants.userSessionKey)
     if (user) setUserInfo(JSON.parse(user))

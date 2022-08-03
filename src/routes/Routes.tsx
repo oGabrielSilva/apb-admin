@@ -1,21 +1,23 @@
 import React, { useContext } from 'react'
-import { Route, Routes } from 'react-router-dom'
 import { ApolloContext } from '../context/Apollo'
 import Home from '../pages/Home'
+import NotFound from '../pages/NotFound'
 import SignIn from '../pages/SignIn'
 import SignUp from '../pages/SignUp'
 
-function Router() {
-  const { sessionUid: session } = useContext(ApolloContext)
+function Routes() {
+  const { sessionUid: session, path } = useContext(ApolloContext)
 
-  return (
-    <div className="App">
-      <Routes>
-        <Route path="/" element={(!session && <SignIn />) || <Home />} />
-        {!session && <Route path="/signup" element={<SignUp />} />}
-      </Routes>
-    </div>
-  )
+  switch (path) {
+    case '/':
+      return !session ? <SignIn /> : <Home />
+    case '/sign-in':
+      return !session ? <SignIn /> : <NotFound />
+    case '/sign-up':
+      return !session ? <SignUp /> : <NotFound />
+    default:
+      return <NotFound />
+  }
 }
 
-export default Router
+export default Routes

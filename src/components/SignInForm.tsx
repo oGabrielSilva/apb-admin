@@ -6,12 +6,12 @@ import React, {
   useRef,
   useState,
 } from 'react'
-import { Link } from 'react-router-dom'
 import Account from '../api/Account'
 import { ApolloContext } from '../context/Apollo'
 import Colors from '../utils/Colors'
 import Margins from '../utils/Margins'
 import Validation from '../utils/Validation'
+import Link from './Link'
 import Loading from './Loading'
 
 interface IStyle {
@@ -166,7 +166,7 @@ function SignInForm() {
       >
         <p>don&apos;t have an account?</p>
         <Link
-          to="/signup"
+          to="/sign-up"
           style={{
             color: Colors.link,
             textDecoration: 'none',
